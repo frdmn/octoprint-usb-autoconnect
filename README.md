@@ -87,6 +87,51 @@ The script was made to work with an Creality Ender 3. In case you have a differe
 
 	Take a look at [step 4 in the installation guide](#installation).
 
+### Run script manually, verbose mode
+
+```shell
+pi@octopi:~ $ bash -x /usr/local/bin/octoprint_usb_autoconnect
++ . /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
+++ APIKEY=XXX
++ curl -siL -X POST -H 'X-Api-Key: XXX' -H 'Content-Type: application/json' localhost/api/connection -d '{"command":"connect"}'
+HTTP/1.1 204 NO CONTENT
+Content-Length: 0
+X-Robots-Tag: noindex, nofollow, noimageindex
+Expires: -1
+Pragma: no-cache
+Cache-Control: pre-check=0, no-cache, no-store, must-revalidate, post-check=0, max-age=0
+X-Clacks-Overhead: GNU Terry Pratchett
+Content-Type: text/html; charset=utf-8
+pi@octopi:~ $
+```
+
+### Run service manually
+
+```
+pi@octopi:~ $ sudo systemctl --no-block start octoprint_usb_autoconnect.service
+pi@octopi:~ $
+```
+
+### Check `udev` monitor
+
+Show all events of the USB subsystem:
+
+```
+pi@octopi:~ $ udevadm monitor --subsystem-match=usb
+monitor will print the received events for:
+UDEV - the event which udev sends out after rule processing
+KERNEL - the kernel uevent
+
+[plug in USB device]
+
+KERNEL[4754.758134] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.3 (usb)
+KERNEL[4754.766885] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.3/1-1.3:1.0 (usb)
+UDEV  [4754.817972] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.3 (usb)
+UDEV  [4754.821559] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.3/1-1.3:1.0 (usb)
+^C
+pi@octopi:~ $
+``` 
+
 ## Contributing
 
 1. Fork it

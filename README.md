@@ -7,9 +7,10 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
 
 ## Installation
 
-1. Clone this repository:
+1. On your OctoPrint/OctoPi, clone this repository - make sure you're working as `root` user:
 
     ```shell
+    sudo su
     git clone https://github.com/frdmn/octoprint-usb-autoconnect /usr/local/src/octoprint-usb-autoconnect
     ```
 
@@ -45,6 +46,46 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
     udevadm control --reload-rules
     systemctl restart systemd-udevd.service
     ```
+
+## Troubleshooting
+
+### Find out `idVendor` / `idProduct`
+
+The script was made to work with an Creality Ender 3. In case you have a different printer, you might have to adjust the `udev` rules to reflect the proper information of your printers USB interface. Follow the steps below to find out the bus and device information of said port:
+
+1. Use `lsusb` to identify your printer interface:
+
+	```shell
+	pi@octopi:~ $ lsusb
+	Bus 001 Device 025: ID 0403:6001 Future Technology Devices International, Ltd FT232 USB-Serial (UART) IC
+	Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp. SMSC9512/9514 Fast Ethernet Adapter
+	Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
+	Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+	```
+	
+	I'm going to use my Ender 3 in this example again, so in this case it's the first line in the command output. Write down the bus and device information:
+	
+	- Bus: `001`
+	- Device: `025`
+
+2. Display the desired `idVendor` and `idProduct` values. Make sure to pass your bus and device information to the `-s` switch from the previous command:
+
+	```shell
+	pi@octopi:~ $ lsusb -vs 001:025 | grep "idVendor\|idProduct"
+	Couldn't open device, some information will be missing
+	  idVendor           0x0403 Future Technology Devices International, Ltd
+	  idProduct          0x6001 FT232 USB-Serial (UART) IC
+	```
+	
+	The numberes are prefixed with a `0x` to indicate that this is a hex value. You can ignore that and just note down everything that follows:
+	
+	- `idVendor`: `0403`
+	- `idProduct`: `6001`
+
+3. Now we just need to adjust (or create) the `udev` rule to reflect the new vendor and product values. Open the `/etc/udev/rules.d/40-octoprint_usb_autoconnect.rules` file with a text editor of your choice:
+
+
+	Take a look at [step 4 in the installation guide](#installation).
 
 ## Contributing
 

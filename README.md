@@ -1,6 +1,6 @@
 # octoprint-usb-autoconnect
 
-![](https://up.frd.mn/wmXdUnVUpC.gif)
+![](https://up.frd.mn/QSfsLEVykm.gif)
 
 Simple bash script (and systemd service) to automatically reconnect the serial connection of OctoPrint using REST whenever the USB cable of the printer is getting plugged in. This is accomplished by a custom udev rule that hooks into the USB subsystem and gets triggered whenever a certain device is found.
 

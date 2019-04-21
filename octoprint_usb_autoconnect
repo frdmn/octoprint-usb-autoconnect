@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Load API key from config file
+. /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
+
+# Send POST request to reconnect serial connection
+curl -siL -X POST -H "X-Api-Key: ${APIKEY}" -H "Content-Type: application/json" localhost/api/connection -d '{"command":"connect"}'

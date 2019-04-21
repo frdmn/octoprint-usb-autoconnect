@@ -19,7 +19,7 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
     ```shell
     cp /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf.sample /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
     editor /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
-    ``` 
+    ```
 
 3. Symlink (or copy) script and service:
 
@@ -62,9 +62,9 @@ The script was made to work with an Creality Ender 3. In case you have a differe
 	Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
 	Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 	```
-	
+
 	I'm going to use my Ender 3 in this example again, so in this case it's the first line in the command output. Write down the bus and device information:
-	
+
 	- Bus: `001`
 	- Device: `025`
 
@@ -76,9 +76,9 @@ The script was made to work with an Creality Ender 3. In case you have a differe
 	  idVendor           0x0403 Future Technology Devices International, Ltd
 	  idProduct          0x6001 FT232 USB-Serial (UART) IC
 	```
-	
+
 	The numberes are prefixed with a `0x` to indicate that this is a hex value. You can ignore that and just note down everything that follows:
-	
+
 	- `idVendor`: `0403`
 	- `idProduct`: `6001`
 
@@ -91,9 +91,12 @@ The script was made to work with an Creality Ender 3. In case you have a differe
 
 ```shell
 pi@octopi:~ $ bash -x /usr/local/bin/octoprint_usb_autoconnect
++ CONFIGFILE=/usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
++ '[' '!' -f /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf ']'
 + . /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
 ++ APIKEY=XXX
-+ curl -siL -X POST -H 'X-Api-Key: XXX' -H 'Content-Type: application/json' localhost/api/connection -d '{"command":"connect"}'
+++ OCTOHOST=http://localhost
++ curl -siL -X POST -H 'X-Api-Key: XXX' -H 'Content-Type: application/json' http://localhost/api/connection -d '{"command":"connect"}'
 HTTP/1.1 204 NO CONTENT
 Content-Length: 0
 X-Robots-Tag: noindex, nofollow, noimageindex
@@ -130,7 +133,7 @@ UDEV  [4754.817972] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.3 (
 UDEV  [4754.821559] add      /devices/platform/soc/3f980000.usb/usb1/1-1/1-1.3/1-1.3:1.0 (usb)
 ^C
 pi@octopi:~ $
-``` 
+```
 
 ## Contributing
 

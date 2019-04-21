@@ -13,7 +13,7 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
     git clone https://github.com/frdmn/octoprint-usb-autoconnect /usr/local/src/octoprint-usb-autoconnect
     ```
 
-2. Obtain your API key from OctoPrint settings, copy and adjust the default configuration file:
+2. Obtain your API key from [OctoPrint settings](https://up.frd.mn/Fcjb2ihnru.jpg), copy and adjust the default configuration file:
 
     ```shell
     cp /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf.sample /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf

@@ -38,7 +38,7 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
     ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", RUN+="/bin/systemctl --no-block start octoprint_usb_autoconnect.service"
     ```
 
-    (Please note that the hook above is for an Creality Ender-3, if you have a different printer you can use `lsusb` and `lsusb -vs 00X:00Y` to find the proper `idVendor` and `idProduct` numbers.)
+    (Please note that the hook above is for an Creality Ender-3, if you have a different printer you can use `lsusb` and `lsusb -vs 00X:00Y` to find the proper `idVendor` and `idProduct` numbers. See "[Find out idVendor / idProduct](#find-out-idvendor--idproduct)" for more more detailed guide.)
 
 5. Activate new `udev` rules and restart service
 

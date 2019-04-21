@@ -17,8 +17,8 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
 
     ```shell
     cp /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf.sample /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
-    vi /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
-    ```
+    editor /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
+    ``` 
 
 3. Symlink (or copy) script and service:
 
@@ -30,7 +30,7 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
 4. Create the `udev` USB hook:
 
     ```shell
-    vi /etc/udev/rules.d/40-octoprint_usb_autoconnect.rules
+    editor /etc/udev/rules.d/40-octoprint_usb_autoconnect.rules
     ```
 
     ```

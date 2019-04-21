@@ -6,8 +6,8 @@ if [ ! -f ${CONFIGFILE} ]; then
     exit 1
 fi
 
-# Load API key from config file
+# Load config file
 . ${CONFIGFILE}
 
 # Send POST request to reconnect serial connection
-curl -siL -X POST -H "X-Api-Key: ${APIKEY}" -H "Content-Type: application/json" ${OCTOHOST}/api/connection -d '{"command":"connect"}'
+curl -siL -X POST -H "Content-Type: application/json" -H "X-Api-Key: ${APIKEY}" ${OCTOHOST}/api/connection -d '{"command":"connect"}'

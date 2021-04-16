@@ -1,4 +1,4 @@
-# octoprint-usb-autoconnect
+# octop*-
 
 [![](https://up.frd.mn/nnTh5bQhjn.jpg)](https://up.frd.mn/21aibgyD15.mp4)
 <sup><sub>(Click the picture above for a short demonstration video)</sup></sub>
@@ -7,51 +7,39 @@ Simple bash script (and systemd service) to automatically reconnect the serial c
 
 ## Installation
 
-1. On your OctoPrint/OctoPi, clone this repository - make sure you're working as `root` user:
+1. On your OctoPrint/OctoPi, 
 
     ```shell
-    sudo su
-    git clone https://github.com/frdmn/octoprint-usb-autoconnect /usr/local/src/octoprint-usb-autoconnect
+    git clone https://github.com/richardturnbull/octoprint-usb-restart-firmware 
+    cd octoprint-usb-restart-firmware
     ```
 
 2. Obtain your API key from [OctoPrint settings](https://up.frd.mn/Fcjb2ihnru.jpg), copy and adjust the default configuration file:
 
     ```shell
-    cp /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf.sample /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
-    editor /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
+    cp octoprint-usb-restart-firmware/octoprint-usb-restart-firmware.conf.sample octoprint-usb-restart-firmware.conf
+    editor octoprint-usb-restart-firmware.conf
     ```
 
-3. Symlink (or copy) script and service:
+4. Ensure the UDEV device & vendor ID is correct in `40-octoprint_usb_restart_firmware.rules` (see Troubleshooting below):
 
     ```shell
-    ln -s /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect /usr/local/bin/octoprint_usb_autoconnect
-    ln -s /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.service /etc/systemd/system/octoprint_usb_autoconnect.service
+    lsusb 
+    editor 40-octoprint_usb_restart_firmware.rules
     ```
 
-4. Create the `udev` USB hook:
+5. Run installer script as root
 
     ```shell
-    editor /etc/udev/rules.d/40-octoprint_usb_autoconnect.rules
-    ```
-
-    ```
-    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0403", ATTR{idProduct}=="6001", TAG+="systemd", ENV{SYSTEMD_WANTS}="octoprint_usb_autoconnect.service"
-    ```
-
-    (Please note that the hook above is for an Creality Ender-3, if you have a different printer you can use `lsusb` and `lsusb -vs 00X:00Y` to find the proper `idVendor` and `idProduct` numbers. See "[Find out idVendor / idProduct](#find-out-idvendor--idproduct)" for more more detailed guide.)
-
-5. Activate new `udev` rules and restart service
-
-    ```shell
-    udevadm control --reload-rules
-    systemctl restart systemd-udevd.service
+    sudo ./install.sh
+    
     ```
 
 ## Troubleshooting
 
 ### Find out `idVendor` / `idProduct`
 
-The script was made to work with an Creality Ender 3. In case you have a different printer, you might have to adjust the `udev` rules to reflect the proper information of your printers USB interface. Follow the steps below to find out the bus and device information of said port:
+The script was made to work with an Creality Ender 3 with a Silent Mainboard. In case you have a different printer, you might have to adjust the `udev` rules to reflect the proper information of your printers USB interface. Follow the steps below to find out the bus and device information of said port:
 
 1. Use `lsusb` to identify your printer interface:
 
@@ -82,7 +70,7 @@ The script was made to work with an Creality Ender 3. In case you have a differe
 	- `idVendor`: `0403`
 	- `idProduct`: `6001`
 
-3. Now we just need to adjust (or create) the `udev` rule to reflect the new vendor and product values. Open the `/etc/udev/rules.d/40-octoprint_usb_autoconnect.rules` file with a text editor of your choice:
+3. Now we just need to adjust (or create) the `udev` rule to reflect the new vendor and product values. Open the `/etc/udev/rules.d/40-octoprint-usb-restart-firmware.rules` file with a text editor of your choice:
 
 
 	Take a look at [step 4 in the installation guide](#installation).
@@ -90,10 +78,10 @@ The script was made to work with an Creality Ender 3. In case you have a differe
 ### Run script manually, verbose mode
 
 ```shell
-pi@octopi:~ $ bash -x /usr/local/bin/octoprint_usb_autoconnect
-+ CONFIGFILE=/usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
-+ '[' '!' -f /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf ']'
-+ . /usr/local/src/octoprint-usb-autoconnect/octoprint_usb_autoconnect.conf
+pi@octopi:~ $ bash -x /usr/local/bin/octoprint-usb-restart-firmware
++ CONFIGFILE=/usr/local/src/octoprint-usb-restart-firmware/octoprint-usb-restart-firmware.conf
++ '[' '!' -f /usr/local/src/octoprint-usb-restart-firmware/octoprint-usb-restart-firmware.conf ']'
++ . /usr/local/src/octoprint-usb-restart-firmware/octoprint-usb-restart-firmware.conf
 ++ APIKEY=XXX
 ++ OCTOHOST=http://localhost
 + curl -siL -X POST -H 'X-Api-Key: XXX' -H 'Content-Type: application/json' http://localhost/api/connection -d '{"command":"connect"}'
@@ -111,7 +99,7 @@ pi@octopi:~ $
 ### Run service manually
 
 ```
-pi@octopi:~ $ sudo systemctl --no-block start octoprint_usb_autoconnect.service
+pi@octopi:~ $ sudo systemctl --no-block start octoprint-usb-restart-firmware.service
 pi@octopi:~ $
 ```
 
@@ -165,7 +153,7 @@ git push origin feature/my-new-feature
 
 ## Version
 
-1.0.1
+1.0.2
 
 ## License
 

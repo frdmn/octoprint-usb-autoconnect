@@ -4,4 +4,4 @@ Description=OctoPrint USB auto connect
 [Service]
 Type=oneshot
 RemainAfterExit=no
-ExecStart=/usr/local/bin/octoprint_usb_autoconnect
+ExecStart=/usr/local/bin/octoprint_usb_restart_firmware

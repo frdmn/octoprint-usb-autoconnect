@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", ATTR{idProduct}=="7523", TAG+="systemd", ENV{SYSTEMD_WANTS}="octoprint_usb_restart_firmware.service"

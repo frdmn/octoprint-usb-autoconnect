@@ -1,15 +1,21 @@
 #!/bin/bash
 
-# Copy script
-cp octoprint_usb_restart_firmware /usr/local/bin/octoprint_usb_restart_firmware
+# Copy script & config
+cp octoprint-usb-restart-firmware /usr/local/bin/octoprint-usb-restart-firmware
+cp octoprint-usb-restart-firmware.conf /usr/local/etc/octoprint-usb-restart-firmware.conf
+# Some basic security for the API key
+chmod 400 /usr/local/etc/octoprint-usb-restart-firmware.conf 
 
 # Create systemd service
-cp octoprint_usb_restart_firmware.service  /etc/systemd/system/octoprint_usb_restart_firmware.service
+ln -s octoprint-usb-restart-firmware.service  /etc/systemd/system/octoprint-usb-restart-firmware.service
 
 # Create Rule
-cp 40-octoprint_usb_restart_firmware.rules /etc/udev/rules.d/40-octoprint_usb_restart_firmware.rules
+ln -s 40-octoprint-usb-restart-firmware.rules /etc/udev/rules.d/40-octoprint-usb-restart-firmware.rules
 
 # Enable & start service
-systemctl enable octoprint_usb_restart_firmware
-systemctl start octoprint_usb_restart_firmware
+udevadm control --reload-rules
+systemctl restart systemd-udevd.service
+systemctl enable octoprint-usb-restart-firmware
+systemctl start octoprint-usb-restart-firmware
+
 

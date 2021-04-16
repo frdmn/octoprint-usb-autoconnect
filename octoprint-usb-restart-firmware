@@ -10,4 +10,4 @@ fi
 . ${CONFIGFILE}
 
 # Send POST request to reconnect serial connection
-curl -siL -X POST -H "Content-Type: application/json" -H "X-Api-Key: ${APIKEY}" ${OCTOHOST}/api/connection -d '{"command":"connect"}'
+curl -siL -X POST -H "Content-Type: application/json" -H "X-Api-Key: ${APIKEY}" ${OCTOHOST}/api/connection -d '{"command":"RESTART_FIRMWARE"}'
